@@ -6,16 +6,6 @@ import (
 	"path/filepath"
 )
 
-var projectRootFiles = []string{
-	"go.mod",
-	"package.json",
-	"requirements.txt",
-	"pyproject.toml",
-	"Cargo.toml",
-	"pom.xml",
-	"build.gradle",
-}
-
 func RunError(cfg *Config, exitCode string, cmd string) {
 	prompt := fmt.Sprintf(
 		"The user ran this command in their terminal: `%s`\n"+
