@@ -15,4 +15,5 @@ clean:
 
 install:
 	go build -o $(APP) .
-	sudo mv $(APP) /usr/local/bin/$(APP)
+	mkdir -p $(HOME)/.local/bin
+	mv $(APP) $(HOME)/.local/bin/$(APP)

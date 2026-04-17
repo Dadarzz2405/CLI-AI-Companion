@@ -1,12 +1,10 @@
 #!/bin/sh
 set -e
 
-REPO="https://github.com/Dadarzz2405/CLI-AI-Companion"
 RELEASES="https://github.com/Dadarzz2405/CLI-AI-Companion/releases/latest/download"
 BIN_NAME="ai"
-INSTALL_DIR="/usr/local/bin"
+INSTALL_DIR="$HOME/.local/bin"
 
-# detect OS
 OS="$(uname -s)"
 ARCH="$(uname -m)"
 
@@ -37,9 +35,18 @@ echo "→ downloading $BINARY..."
 curl -fsSL "$RELEASES/$BINARY" -o "/tmp/$BIN_NAME"
 chmod +x "/tmp/$BIN_NAME"
 
-echo "→ installing to $INSTALL_DIR/$BIN_NAME (may ask for password)"
-sudo mv "/tmp/$BIN_NAME" "$INSTALL_DIR/$BIN_NAME"
+mkdir -p "$INSTALL_DIR"
+mv "/tmp/$BIN_NAME" "$INSTALL_DIR/$BIN_NAME"
 
 echo ""
 echo "done! run: ai"
 echo "first launch will walk you through setup."
+
+case ":$PATH:" in
+  *":$HOME/.local/bin:"*) ;;
+  *)
+    echo ""
+    echo "⚠ add this to your ~/.zshrc:"
+    echo "  export PATH=\"\$HOME/.local/bin:\$PATH\""
+    ;;
+esac
