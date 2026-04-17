@@ -1,0 +1,38 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+
+      - name: build all targets
+        run: |
+          mkdir dist
+          GOOS=darwin  GOARCH=arm64  go build -o dist/ai-darwin-arm64 .
+          GOOS=darwin  GOARCH=amd64  go build -o dist/ai-darwin-amd64 .
+          GOOS=linux   GOARCH=amd64  go build -o dist/ai-linux-amd64 .
+          GOOS=windows GOARCH=amd64  go build -o dist/ai-windows-amd64.exe .
+
+      - name: create github release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/ai-darwin-arm64
+            dist/ai-darwin-amd64
+            dist/ai-linux-amd64
+            dist/ai-windows-amd64.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
