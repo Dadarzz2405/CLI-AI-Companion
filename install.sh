@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-REPO="https://github.com/Dadarzz2405/ai-cli"
-RELEASES="https://github.com/Dadarzz2405/ai-cli/releases/latest/download"
+REPO="https://github.com/Dadarzz2405/CLI-AI-Companion"
+RELEASES="https://github.com/Dadarzz2405/CLI-AI-Companion/releases/latest/download"
 BIN_NAME="ai"
 INSTALL_DIR="/usr/local/bin"
 
