@@ -8,15 +8,17 @@ import (
 
 func main() {
 	cfg, err := LoadConfig()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "kai: couldn't load config —", err)
-		os.Exit(1)
+	if err != nil || NeedsSetup(cfg) {
+		cfg, err = RunSetup()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "setup failed:", err)
+			os.Exit(1)
+		}
 	}
 
 	mem := LoadMemory()
 	args := os.Args[1:]
 
-	// no args → interactive chat
 	if len(args) == 0 {
 		RunChat(cfg, mem)
 		return
@@ -33,8 +35,15 @@ func main() {
 		code, cmd := parseErrorFlags(args[1:])
 		RunError(cfg, code, cmd)
 
+	case "--setup":
+		// force re-run setup
+		cfg, err = RunSetup()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "setup failed:", err)
+			os.Exit(1)
+		}
+
 	default:
-		// treat anything else as a quick question
 		question := strings.Join(args, " ")
 		RunQuickAsk(cfg, mem, question)
 	}
